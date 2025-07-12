@@ -19,8 +19,16 @@
           <div id="item">
             <div id="item-dg">
               <div id="ci-item">
-                <q-carousel swipeable animated :autoplay="autoplay" v-model="slide" thumbnails infinite height="25vw"
-                  @mouseenter="autoplay = false" @mouseleave="autoplay = true">
+                <q-carousel swipeable animated :autoplay="autoplay" v-model="slide" thumbnails infinite height="30vw"
+                  @mouseenter="autoplay = false" @mouseleave="autoplay = true" v-if="!isMobileView">
+                  <q-carousel-slide :name="1" img-src="https://www.ds3comunicaciones.com/mikrotik/images/RB750.jpg" />
+                  <q-carousel-slide :name="2"
+                    img-src="https://www.ds3comunicaciones.com/mikrotik/images/RB750_top.jpg" />
+                  <q-carousel-slide :name="3"
+                    img-src="https://www.ds3comunicaciones.com/mikrotik/images/RB750_hand.jpg" />
+                </q-carousel>
+                <q-carousel swipeable animated :autoplay="autoplay" v-model="slide" thumbnails infinite height="80vw"
+                  @mouseenter="autoplay = false" @mouseleave="autoplay = true" v-if="isMobileView">
                   <q-carousel-slide :name="1" img-src="https://www.ds3comunicaciones.com/mikrotik/images/RB750.jpg" />
                   <q-carousel-slide :name="2"
                     img-src="https://www.ds3comunicaciones.com/mikrotik/images/RB750_top.jpg" />
@@ -153,7 +161,7 @@
                     </table>
 
 
-                    <p>Resultados de Rendimiento</p>
+                    <p id="idg-h1">Resultados de Rendimiento</p>
                     <table border="1" cellspacing="0" cellpadding="5" bgcolor="#FFFFFF" bordercolor="#0086C6">
                       <thead>
                         <tr bgcolor="#3366FF" style="color: #FFFFFF; font-family: Verdana;">
@@ -407,7 +415,7 @@
         <div id="ci-adicionales">
           <p>Productos que podrían interesarte: </p>
 
-          <div id="cia-car">
+          <div id="cia-car" v-if="!isMobileView">
             <q-carousel v-model="slide" transition-prev="slide-right" transition-next="slide-left" swipeable animated
               control-color="amber" navigation padding arrows height="auto" class=" rounded-borders">
               <q-carousel-slide :name="1" class="column no-wrap">
@@ -682,6 +690,100 @@
 
             </q-carousel>
           </div>
+          <div id="cia-car" v-if="isMobileView">
+            <q-carousel v-model="slide" transition-prev="slide-right" transition-next="slide-left" swipeable animated
+              control-color="amber" navigation padding arrows height="auto" class=" rounded-borders">
+              <q-carousel-slide :name="1" class="column no-wrap">
+
+                <div id="ciac-order">
+                  <q-card class="my-card">
+                    <img src="https://www.ds3comunicaciones.com/mikrotik/images/RB1100.jpg">
+
+                    <q-card-section>
+                      <div class="text-h6">ROUTERBOARD MIKROTIK RB1100</div>
+                    </q-card-section>
+
+                    <q-card-actions>
+                      <q-btn flat color="primary" label="Ver Producto" />
+                    </q-card-actions>
+                  </q-card>
+
+
+                </div>
+
+
+
+              </q-carousel-slide>
+              <q-carousel-slide :name="2" class="column no-wrap">
+
+                <div id="ciac-order">
+
+
+                  <q-card class="my-card">
+                    <img src="https://www.ds3comunicaciones.com/mikrotik/images/RB1200.jpg">
+
+                    <q-card-section>
+                      <div class="text-h6">ROUTERBOARD MIKROTIK RB1200</div>
+                    </q-card-section>
+
+                    <q-card-actions>
+                      <q-btn flat color="primary" label="Ver Producto" />
+                    </q-card-actions>
+                  </q-card>
+
+
+                </div>
+
+
+
+              </q-carousel-slide>
+              <q-carousel-slide :name="3" class="column no-wrap">
+
+                <div id="ciac-order">
+
+
+                  <q-card class="my-card">
+                    <img src="https://www.ds3comunicaciones.com/mikrotik/images/RB2011L-IN-1.png">
+
+                    <q-card-section>
+                      <div class="text-h6">RouterBOARD con 5 puertos Gigabit Ethernet MIKROTIK RB2011L-IN</div>
+                    </q-card-section>
+
+                    <q-card-actions>
+                      <q-btn flat color="primary" label="Ver Producto" />
+                    </q-card-actions>
+                  </q-card>
+
+
+                </div>
+
+
+
+              </q-carousel-slide>
+              <q-carousel-slide :name="4" class="column no-wrap">
+
+                <div id="ciac-order">
+
+                  <q-card class="my-card">
+                    <img src="https://www.ds3comunicaciones.com/mikrotik/images/RB1100AHx2-1.png">
+
+                    <q-card-section>
+                      <div class="text-h6">RouterBOARD con 13 puertos Gigabit Ethernet MIKROTIK RB1100AHx2</div>
+                    </q-card-section>
+
+                    <q-card-actions>
+                      <q-btn flat color="primary" label="Ver Producto" />
+                    </q-card-actions>
+                  </q-card>
+                </div>
+
+
+
+              </q-carousel-slide>
+
+
+            </q-carousel>
+          </div>
         </div>
       </div>
 
@@ -714,7 +816,7 @@
         </div>
 
         <div class="f-col3">
-          <h2 class="fc2-t">Soluciones</h2>
+          <h2 class="fc2-t">Soporte</h2>
           <a href="#">Soporte Técnico</a>
           <a href="#">Acerca de Nosotros</a>
         </div>
@@ -740,7 +842,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
 
 export default defineComponent({
   name: 'IndexPage',
@@ -750,474 +852,969 @@ export default defineComponent({
       visible: false,
       autoplay: true
     };
+  },
+  setup() {
+    const isMobileView = ref(false)
+
+    const mobileBreakpoint = 768;
+
+    const checkScreenSize = () => {
+      isMobileView.value = window.innerWidth < mobileBreakpoint;
+    };
+
+    onMounted(() => {
+      checkScreenSize();
+      window.addEventListener('resize', checkScreenSize);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', checkScreenSize);
+    });
+
+    return {
+      isMobileView
+    }
   }
 });
 </script>
 
 
 <style lang="scss" scoped>
-#lpage {
-  flex-grow: 1;
-  padding: 0.5vw 4vw;
+@media (min-width:768px) {
+  #lpage {
+    flex-grow: 1;
+    padding: 0.5vw 4vw;
 
-  #breadcrumb {
-    font-size: 0.75vw;
-    padding: 0.5vw 0;
-  }
+    #breadcrumb {
+      font-size: 0.75vw;
+      padding: 0.5vw 0;
+    }
 
-  #content {
+    #content {
 
-    #c-product {
-      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .1);
-      border-radius: 0.5vw;
-      padding: 1vw;
-      display: grid;
-      grid-template-columns: 75% 25%;
+      #c-product {
+        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .1);
+        border-radius: 0.5vw;
+        padding: 1vw;
+        display: grid;
+        grid-template-columns: 75% 25%;
 
-      #item {
-        grid-column-start: 1;
-        grid-column-end: 2;
+        #item {
+          grid-column-start: 1;
+          grid-column-end: 2;
 
-        #item-dg {
-          display: grid;
-          grid-template-columns: 60% 40%;
+          #item-dg {
+            display: grid;
+            grid-template-columns: 60% 40%;
 
-          #ci-item {
-            grid-column-start: 1;
-            grid-column-end: 2;
-            overflow: hidden;
-          }
+            #ci-item {
+              grid-column-start: 1;
+              grid-column-end: 2;
+              overflow: hidden;
+            }
 
-          #ci-desc {
-            grid-column-start: 2;
-            grid-column-end: 3;
-            padding: 1vw;
+            #ci-desc {
+              grid-column-start: 2;
+              grid-column-end: 3;
+              padding: 1vw;
 
-            #cid-title {
-              h6 {
-                padding: 0;
-                margin: 0;
-                opacity: 0.6;
+              #cid-title {
+                h6 {
+                  padding: 0;
+                  margin: 0;
+                  opacity: 0.6;
+                }
+
+                h3 {
+                  padding: 0%;
+                  margin: 0;
+                  font-size: 1.5vw;
+                  font-weight: bold;
+                  opacity: 0.6;
+                }
               }
 
-              h3 {
-                padding: 0%;
-                margin: 0;
-                font-size: 1.5vw;
+              #cid-price {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin: 1vw 3vw 1vw 0;
+                // border: 1px solid red;
+                padding: 1vw 0;
+                border-top: 0.1vw solid rgba(128, 128, 128, 0.5);
+                border-bottom: 0.1vw solid rgba(128, 128, 128, 0.5);
+
+                p {
+                  all: unset;
+                  font-size: 1.5vw;
+                  font-weight: bold;
+
+                  span {
+                    color: red;
+                  }
+                }
+
+                button {
+                  font-size: 0.75vw;
+                  padding: 0.5vw;
+                  display: flex;
+                  flex-direction: row;
+                  gap: 1vw;
+                  justify-items: center;
+                  align-items: center;
+                  border-radius: 1vw;
+                  background-color: $primary;
+                  border: none;
+                  cursor: pointer;
+                  transition: all 0.2s;
+
+                  img {
+                    width: 1.5vw;
+                    filter: invert(1);
+                  }
+
+                  p {
+                    color: white;
+                  }
+
+                  &:hover {
+                    background-color: $secondary;
+                    transform: scale(1.1);
+                  }
+                }
+              }
+
+              #cid-about {
+                p {
+                  margin: 0;
+                  padding: 0;
+                  font-weight: bold;
+                  font-size: 1vw;
+                }
+
+                ul {
+                  margin: 0;
+                  margin-top: 0.5vw;
+                  margin-bottom: 0.5vw;
+
+                  li {
+                    font-size: 0.75vw;
+                  }
+                }
+
+                a {
+                  padding: 1vw;
+                  font-size: 1.25vw;
+                  letter-spacing: 0.05vw;
+                  text-decoration: underline;
+                  font-weight: bold;
+                  cursor: pointer;
+                  transition: 0.2s all;
+
+                  &:hover {
+                    color: blue;
+                  }
+                }
+              }
+            }
+          }
+
+          #item-desc-g {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-template-rows: auto auto;
+            margin-top: 2vw;
+
+            p {
+              font-size: 1.5vw;
+              width: 100%;
+              margin: 0;
+              padding: 0;
+            }
+
+            h1 {
+              display: flex;
+              justify-self: center;
+              font-size: 2vw;
+              align-self: center;
+              font-weight: bold;
+            }
+
+
+            #idg-1 {
+              grid-column-start: 1;
+              grid-column-end: 2;
+              grid-row-start: 1;
+              grid-row-end: 2;
+              display: flex;
+              flex-direction: column;
+              gap: 2vw;
+              align-content: center;
+              align-items: center;
+              // border: 1px solid red;
+              font-size: 0.75vw;
+
+              p {
+                border-bottom: 0.25vw rgba(128, 128, 128, 0.5);
+              }
+
+
+              #idg-st {
                 font-weight: bold;
-                opacity: 0.6;
+                // border: 1px solid red;
+              }
+
+              table {
+                width: 30vw;
               }
             }
 
-            #cid-price {
+            #idg-2 {
+              grid-column-start: 2;
+              grid-column-end: 3;
+              grid-row-start: 1;
+              grid-row-end: 2;
+              padding: 0 2vw;
+
+
+              h2 {
+                font-weight: bold;
+                opacity: 0.6;
+                font-size: 1.5vw;
+              }
+
+              p,
+              li {
+                font-size: 1vw;
+              }
+
+
+            }
+
+            #idg-3 {
+              grid-column-start: 1;
+              grid-column-end: 3;
+              grid-row-start: 2;
+              grid-row-end: 3;
+              // border: 1px solid red;
+              margin-top: 2vw;
+              padding: 1vw;
               display: flex;
               flex-direction: row;
-              justify-content: space-between;
+              justify-content: center;
               align-items: center;
-              margin: 1vw 3vw 1vw 0;
-              // border: 1px solid red;
-              padding: 1vw 0;
-              border-top: 0.1vw solid rgba(128, 128, 128, 0.5);
-              border-bottom: 0.1vw solid rgba(128, 128, 128, 0.5);
+              justify-items: center;
+
+              gap: 2vw;
 
               p {
                 all: unset;
                 font-size: 1.5vw;
                 font-weight: bold;
-
-                span {
-                  color: red;
-                }
+                opacity: 0.6;
               }
 
               button {
-                font-size: 0.75vw;
-                padding: 0.5vw;
-                display: flex;
-                flex-direction: row;
-                gap: 1vw;
-                justify-items: center;
-                align-items: center;
-                border-radius: 1vw;
-                background-color: $primary;
+                background-color: $secondary;
+                border-radius: 2vw;
+                font-size: 1.5vw;
+                font-weight: bold;
+                padding: 0.5vw 2vw;
                 border: none;
-                cursor: pointer;
-                transition: all 0.2s;
-
-                img {
-                  width: 1.5vw;
-                  filter: invert(1);
-                }
-
-                p {
-                  color: white;
-                }
-
-                &:hover {
-                  background-color: $secondary;
-                  transform: scale(1.1);
-                }
-              }
-            }
-
-            #cid-about {
-              p {
-                margin: 0;
-                padding: 0;
-                font-weight: bold;
-                font-size: 1vw;
-              }
-
-              ul {
-                margin: 0;
-                margin-top: 0.5vw;
-                margin-bottom: 0.5vw;
-
-                li {
-                  font-size: 0.75vw;
-                }
-              }
-
-              a {
-                padding: 1vw;
-                font-size: 1.25vw;
-                letter-spacing: 0.05vw;
-                text-decoration: underline;
-                font-weight: bold;
-                cursor: pointer;
                 transition: 0.2s all;
+                color: white;
+                cursor: pointer;
 
                 &:hover {
-                  color: blue;
+                  background-color: $primary;
                 }
               }
             }
+
           }
+
         }
 
-        #item-desc-g {
-          display: grid;
-          grid-template-columns: 50% 50%;
-          grid-template-rows: auto auto;
-          margin-top: 2vw;
+        #recomendaciones {
+          grid-column-start: 2;
+          grid-column-end: 3;
+          font-size: 1.5vw;
+          font-weight: bold;
 
-          p {
-            font-size: 1.5vw;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-          }
-
-          h1 {
-            display: flex;
-            justify-self: center;
-            font-size: 2vw;
-            align-self: center;
-            font-weight: bold;
-          }
-
-
-          #idg-1 {
-            grid-column-start: 1;
-            grid-column-end: 2;
-            grid-row-start: 1;
-            grid-row-end: 2;
+          #r-marcas {
             display: flex;
             flex-direction: column;
-            gap: 2vw;
-            align-content: center;
+            gap: 0.05vw;
             align-items: center;
-            // border: 1px solid red;
-            font-size: 0.75vw;
-
-            p {
-              border-bottom: 0.25vw rgba(128, 128, 128, 0.5);
-            }
-
-
-            #idg-st {
-              font-weight: bold;
-              // border: 1px solid red;
-            }
-
-            table {
-              width: 30vw;
-            }
-          }
-
-          #idg-2 {
-            grid-column-start: 2;
-            grid-column-end: 3;
-            grid-row-start: 1;
-            grid-row-end: 2;
-            padding: 0 2vw;
-
-
-            h2 {
-              font-weight: bold;
-              opacity: 0.6;
-              font-size: 1.5vw;
-            }
-
-            p,
-            li {
-              font-size: 1vw;
-            }
-
-
-          }
-
-          #idg-3 {
-            grid-column-start: 1;
-            grid-column-end: 3;
-            grid-row-start: 2;
-            grid-row-end: 3;
-            // border: 1px solid red;
-            margin-top: 2vw;
+            width: 100%;
             padding: 1vw;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            justify-items: center;
 
-            gap: 2vw;
-
-            p {
-              all: unset;
-              font-size: 1.5vw;
-              font-weight: bold;
-              opacity: 0.6;
-            }
-
-            button {
-              background-color: $secondary;
-              border-radius: 2vw;
-              font-size: 1.5vw;
-              font-weight: bold;
-              padding: 0.5vw 2vw;
-              border: none;
-              transition: 0.2s all;
-              color: white;
-              cursor: pointer;
-
-              &:hover {
-                background-color: $primary;
+            a {
+              img {
+                width: 7.5vw;
               }
             }
           }
 
-        }
+          #r-price {
+            display: flex;
+            flex-direction: column;
+            padding: 1vw;
 
-      }
+            a {
+              font-size: 1vw;
+              width: 100%;
+              font-weight: normal;
+              color: $primary;
+              transition: 0.2s all;
 
-      #recomendaciones {
-        grid-column-start: 2;
-        grid-column-end: 3;
-        font-size: 1.5vw;
-        font-weight: bold;
-
-        #r-marcas {
-          display: flex;
-          flex-direction: column;
-          gap: 0.05vw;
-          align-items: center;
-          width: 100%;
-          padding: 1vw;
-
-          a {
-            img {
-              width: 7.5vw;
+              &:hover {
+                color: $primary;
+                background-color: rgba($primary, 0.2);
+              }
             }
           }
         }
+      }
 
-        #r-price {
-          display: flex;
-          flex-direction: column;
+      #ci-adicionales {
+        p {
+          margin-top: 2vw;
+          margin-bottom: 0.5vw;
+          font-size: 1vw;
+          font-weight: bold;
+          opacity: 0.6;
+        }
+
+        #cia-car {
+          box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .1);
+          border-radius: 0.5vw;
           padding: 1vw;
 
-          a {
-            font-size: 1vw;
-            width: 100%;
-            font-weight: normal;
-            color: $primary;
-            transition: 0.2s all;
 
-            &:hover {
-              color: $primary;
-              background-color: rgba($primary, 0.2);
+          #ciac-order {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 1vw;
+
+            .my-card {
+              width: 15vw;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+
+              img {
+                height: 5vw;
+              }
             }
           }
         }
       }
     }
 
-    #ci-adicionales {
-      p {
-        margin-top: 2vw;
-        margin-bottom: 0.5vw;
+  }
+
+  footer {
+    display: flex;
+    flex-direction: column;
+    padding: 1vw 4vw;
+    width: 100%;
+    background-color: #f2bc59;
+
+    #ff {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+
+      .f-col1 {
+        img {
+          width: 10vw;
+          margin-bottom: 1vw;
+        }
+
+        p {
+          font-size: 1vw;
+          font-weight: bold;
+          opacity: 0.6;
+        }
+
+        .fc1-i {
+          display: flex;
+          flex-direction: row;
+          gap: 1vw;
+          margin-bottom: 1vw;
+        }
+
+        a {
+          display: flex;
+          flex-direction: row;
+          text-decoration: none;
+          gap: 1vw;
+          align-items: start;
+          justify-content: start;
+          color: black;
+
+          img {
+            width: 1.5vw;
+            height: auto;
+          }
+        }
+      }
+
+      .f-col2 {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5vw;
+
+        a {
+          font-size: 0.9vw;
+          text-decoration: none;
+          color: black;
+          width: 10vw;
+          padding: 0.1vw;
+
+          &:hover {
+            text-decoration: underline;
+            background-color: rgba($primary, 0.2);
+          }
+        }
+
+      }
+
+      .fc2-t {
         font-size: 1vw;
         font-weight: bold;
         opacity: 0.6;
+        margin-bottom: 0vw;
       }
 
-      #cia-car {
-        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .1);
-        border-radius: 0.5vw;
-        padding: 1vw;
+      .f-col3 {
+        display: flex;
+        flex-direction: column;
 
+        gap: 0.5vw;
 
-        #ciac-order {
+        a {
+          font-size: 0.9vw;
+          text-decoration: none;
+          color: black;
+          width: 10vw;
+          padding: 0.1vw;
+
+          &:hover {
+            text-decoration: underline;
+            background-color: rgba($primary, 0.2);
+          }
+        }
+      }
+
+      .f-col4 {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5vw;
+
+        a {
           display: flex;
           flex-direction: row;
-          justify-content: space-between;
-          gap: 1vw;
+          font-size: 0.9vw;
+          text-decoration: none;
+          color: black;
+          width: 10vw;
+          padding: 0.1vw;
+          gap: 0.5vw;
 
-          .my-card {
-            width: 15vw;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-
-            img {
-              height: 5vw;
-            }
+          img {
+            width: 1vw;
           }
+
+          &:hover {
+            text-decoration: underline;
+            background-color: rgba($primary, 0.2);
+          }
+        }
+
+        p {
+          font-size: 0.75vw;
+          text-decoration: none;
+          color: black;
+          width: 10vw;
+          margin: 0;
+          padding: 0;
         }
       }
     }
   }
-
 }
 
-footer {
-  display: flex;
-  flex-direction: column;
-  padding: 1vw 4vw;
-  width: 100%;
+@media (max-width:768px) {
+  #lpage {
+    flex-grow: 1;
+    padding: 0.5vw 4vw;
 
-  #ff {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    #breadcrumb {
+      font-size: 2.5vw;
+      padding: 2vw 0;
+    }
 
-    .f-col1 {
-      img {
-        width: 10vw;
-        margin-bottom: 1vw;
+    #content {
+
+      #c-product {
+        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .1);
+        border-radius: 0.5vw;
+        padding: 1vw;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        #item {
+
+          #item-dg {
+            display: flex;
+            flex-direction: column;
+            gap: 2vw;
+            width: 100%;
+
+
+
+            #ci-desc {
+              padding: 2vw;
+
+              #cid-title {
+                h6 {
+                  padding: 0;
+                  margin: 0;
+                  opacity: 0.6;
+                  font-size: 3vw;
+                }
+
+                h3 {
+                  padding: 0%;
+                  margin: 0;
+                  font-size: 4vw;
+                  line-height: 1;
+                  font-weight: bold;
+                  opacity: 0.6;
+                }
+              }
+
+              #cid-price {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin: 3vw 0;
+                // border: 1px solid red;
+                padding: 1vw 0;
+                border-top: 0.1vw solid rgba(128, 128, 128, 0.5);
+                border-bottom: 0.1vw solid rgba(128, 128, 128, 0.5);
+
+                p {
+                  all: unset;
+                  font-size: 5vw;
+                  font-weight: bold;
+
+                  span {
+                    color: red;
+                  }
+                }
+
+                button {
+                  padding: 2vw;
+                  display: flex;
+                  flex-direction: row;
+                  gap: 3vw;
+                  justify-items: center;
+                  align-items: center;
+                  border-radius: 1vw;
+                  background-color: $primary;
+                  border: none;
+                  cursor: pointer;
+                  transition: all 0.2s;
+
+                  img {
+                    width: 4vw;
+                    filter: invert(1);
+                  }
+
+                  p {
+                    color: white;
+                  }
+
+                  &:hover {
+                    background-color: $secondary;
+                    transform: scale(1.1);
+                  }
+                }
+              }
+
+              #cid-about {
+                p {
+                  margin: 0;
+                  padding: 0;
+                  font-weight: bold;
+                  font-size: 4vw;
+                }
+
+                ul {
+                  margin: 0;
+                  margin-top: 2vw;
+                  margin-bottom: 2vw;
+
+                  li {
+                    font-size: 3vw;
+                  }
+                }
+
+                a {
+                  padding: 4vw;
+                  font-size: 5vw;
+                  letter-spacing: 0.2vw;
+                  text-decoration: underline;
+                  font-weight: bold;
+                  cursor: pointer;
+                  transition: 0.2s all;
+
+                  &:hover {
+                    color: blue;
+                  }
+                }
+              }
+            }
+          }
+
+          #item-desc-g {
+            display: flex;
+            flex-direction: column;
+            gap: 3vw;
+            width: 90vw;
+            margin-top: 8vw;
+            overflow: hidden;
+
+            p {
+              font-size: 6vw;
+              width: 100%;
+              margin: 0;
+              padding: 0;
+            }
+
+            h1 {
+              display: flex;
+              justify-self: center;
+              font-size: 6vw;
+              margin: 0;
+              padding: 0;
+              align-self: center;
+              font-weight: bold;
+            }
+
+
+            #idg-1 {
+              display: flex;
+              flex-direction: column;
+              gap: 8vw;
+              align-content: center;
+              align-items: center;
+              justify-items: center;
+              justify-content: center;
+              // border: 1px solid red;
+              font-size: 3vw;
+
+              p {
+                border-bottom: 1vw rgba(128, 128, 128, 0.5);
+              }
+
+
+              #idg-st {
+                font-weight: bold;
+                // border: 1px solid red;
+              }
+
+              #idg-h1 {
+                display: flex;
+                justify-self: center;
+                font-size: 6vw;
+                margin: 0;
+                padding: 0;
+                align-self: center;
+                font-weight: bold;
+              }
+
+              table {
+                width: 80vw;
+
+                th,
+                tr {
+                  font-size: 1.75vw;
+                }
+              }
+            }
+
+            #idg-2 {
+              padding: 0 3vw;
+
+
+              h2 {
+                font-weight: bold;
+                opacity: 0.6;
+                font-size: 5vw;
+              }
+
+              p,
+              li {
+                font-size: 4vw;
+              }
+
+
+            }
+
+            #idg-3 {
+              grid-column-start: 1;
+              grid-column-end: 3;
+              grid-row-start: 2;
+              grid-row-end: 3;
+              // border: 1px solid red;
+              margin-top: 2vw;
+              padding: 1vw;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              justify-items: center;
+
+              gap: 2vw;
+
+              p {
+                all: unset;
+                font-size: 6vw;
+                font-weight: bold;
+                opacity: 0.6;
+              }
+
+              button {
+                background-color: $secondary;
+                border-radius: 2vw;
+                font-size: 5vw;
+                font-weight: bold;
+                padding: 0.5vw 2vw;
+                border: none;
+                transition: 0.2s all;
+                color: white;
+                cursor: pointer;
+
+                &:hover {
+                  background-color: $primary;
+                }
+              }
+            }
+
+          }
+
+        }
+
+        #recomendaciones {
+          grid-column-start: 2;
+          grid-column-end: 3;
+          font-size: 6vw;
+          font-weight: bold;
+
+          #r-marcas {
+            display: flex;
+            flex-direction: column;
+            gap: 0.05vw;
+            align-items: center;
+            width: 100%;
+            padding: 1vw;
+
+            a {
+              img {
+                width: 30vw;
+              }
+            }
+          }
+
+          #r-price {
+            display: flex;
+            flex-direction: column;
+            padding: 1vw;
+
+            a {
+              font-size: 4vw;
+              width: 100%;
+              font-weight: normal;
+              color: $primary;
+              transition: 0.2s all;
+
+              &:hover {
+                color: $primary;
+                background-color: rgba($primary, 0.2);
+              }
+            }
+          }
+        }
       }
 
-      p {
-        font-size: 1vw;
+      #ci-adicionales {
+        p {
+          margin-top: 2vw;
+          margin-bottom: 0.5vw;
+          font-size: 4vw;
+          font-weight: bold;
+          opacity: 0.6;
+        }
+
+        #cia-car {
+          box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .1);
+          border-radius: 2vw;
+          padding: 1vw;
+
+
+          #ciac-order {
+
+            .my-card {
+              // width: 80vw;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+
+              img {
+                height: 20vw;
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  footer {
+    display: flex;
+    flex-direction: column;
+    padding: 1vw 4vw;
+    background-color: #f2bc59;
+    width: 100%;
+
+    #ff {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      .f-col1 {
+        img {
+          width: 40vw;
+          margin-bottom: 4vw;
+        }
+
+        p {
+          font-size: 4vw;
+          font-weight: bold;
+          opacity: 0.6;
+        }
+
+        .fc1-i {
+          display: flex;
+          flex-direction: row;
+          gap: 4vw;
+          margin-bottom: 4vw;
+        }
+
+        a {
+          display: flex;
+          flex-direction: row;
+          text-decoration: none;
+          gap: 4vw;
+          align-items: start;
+          justify-content: start;
+          color: black;
+
+          img {
+            width: 6vw;
+            height: auto;
+          }
+        }
+      }
+
+      .f-col2 {
+        display: flex;
+        flex-direction: column;
+        gap: 2vw;
+
+        a {
+          font-size: 3.5vw;
+          text-decoration: none;
+          color: black;
+          width: 40vw;
+          padding: 0.4vw;
+
+          &:hover {
+            text-decoration: underline;
+            background-color: rgba($primary, 0.2);
+          }
+        }
+
+      }
+
+      .fc2-t {
+        font-size: 4vw;
         font-weight: bold;
         opacity: 0.6;
+        margin-bottom: 0vw;
       }
 
-      .fc1-i {
+      .f-col3 {
         display: flex;
-        flex-direction: row;
-        gap: 1vw;
-        margin-bottom: 1vw;
+        flex-direction: column;
+
+        gap: 2vw;
+
+        a {
+          font-size: 3.6vw;
+          text-decoration: none;
+          color: black;
+          width: 40vw;
+          padding: 0.4vw;
+
+          &:hover {
+            text-decoration: underline;
+            background-color: rgba($primary, 0.2);
+          }
+        }
       }
 
-      a {
+      .f-col4 {
         display: flex;
-        flex-direction: row;
-        text-decoration: none;
-        gap: 1vw;
-        align-items: start;
-        justify-content: start;
-        color: black;
+        flex-direction: column;
+        gap: 2vw;
 
-        img {
-          width: 1.5vw;
-          height: auto;
-        }
-      }
-    }
+        a {
+          display: flex;
+          flex-direction: row;
+          font-size: 3.6vw;
+          text-decoration: none;
+          color: black;
+          width: 40vw;
+          padding: 0.4vw;
+          gap: 2vw;
 
-    .f-col2 {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5vw;
+          img {
+            width: 4vw;
+          }
 
-      a {
-        font-size: 0.9vw;
-        text-decoration: none;
-        color: black;
-        width: 10vw;
-        padding: 0.1vw;
-
-        &:hover {
-          text-decoration: underline;
-          background-color: rgba($primary, 0.2);
-          color: $primary;
-        }
-      }
-
-    }
-
-    .fc2-t {
-      font-size: 1vw;
-      font-weight: bold;
-      opacity: 0.6;
-      margin-bottom: 0vw;
-    }
-
-    .f-col3 {
-      display: flex;
-      flex-direction: column;
-
-      gap: 0.5vw;
-
-      a {
-        font-size: 0.9vw;
-        text-decoration: none;
-        color: black;
-        width: 10vw;
-        padding: 0.1vw;
-
-        &:hover {
-          text-decoration: underline;
-          background-color: rgba($primary, 0.2);
-          color: $primary;
-        }
-      }
-    }
-
-    .f-col4 {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5vw;
-
-      a {
-        display: flex;
-        flex-direction: row;
-        font-size: 0.9vw;
-        text-decoration: none;
-        color: black;
-        width: 10vw;
-        padding: 0.1vw;
-        gap: 0.5vw;
-
-        img {
-          width: 1vw;
+          &:hover {
+            text-decoration: underline;
+            background-color: rgba($primary, 0.2);
+          }
         }
 
-        &:hover {
-          text-decoration: underline;
-          background-color: rgba($primary, 0.2);
-          color: $primary;
+        p {
+          font-size: 3vw;
+          text-decoration: none;
+          color: black;
+          width: 40vw;
+          margin: 0;
+          padding: 0;
         }
-      }
-
-      p {
-        font-size: 0.75vw;
-        text-decoration: none;
-        color: black;
-        width: 10vw;
-        margin: 0;
-        padding: 0;
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="bg-white">
-      <div id="nvbar">
+      <div id="nvbar" v-if="!isMobileView">
         <div id="nv-main">
           <img src="logos\Logo1.jpg" alt="" id="nv-logo">
 
@@ -85,6 +85,143 @@
 </div> -->
 
       </div>
+
+      <div id="nbar-m" v-if="isMobileView">
+        <q-header elevated class="bg-white text-black">
+          <q-toolbar>
+            <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+
+            <q-toolbar-title>
+              <img src="logos\Logo1.jpg" alt="Logo" style="height: 40px; margin-top: 5px;">
+            </q-toolbar-title>
+
+            <q-btn flat dense round icon="search" aria-label="Search" @click="showSearchBar = !showSearchBar" />
+          </q-toolbar>
+
+          <q-toolbar v-if="showSearchBar" class="bg-grey-2">
+            <q-input dense outlined v-model="searchQuery" placeholder="Buscar..." class="full-width">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </q-toolbar>
+        </q-header>
+
+        <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-grey-1">
+          <q-list>
+            <q-item-label header>
+              Categorías
+            </q-item-label>
+
+            <q-item clickable v-ripple to="/">
+              <q-item-section avatar>
+                <img src="icons\catalyst.png" alt="" style="width: 24px; height: 24px;">
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Switch Catalyst</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/">
+              <q-item-section avatar>
+                <img src="icons\Cisco Business.ico" alt="" style="width: 24px; height: 24px;">
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Cisco Business</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/">
+              <q-item-section avatar>
+                <img src="icons\Switch Industrial.ico" alt="" style="width: 24px; height: 24px;">
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Switch Industrial</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/">
+              <q-item-section avatar>
+                <img src="icons\rt.png" alt="" style="width: 24px; height: 24px;">
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Aironet</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/">
+              <q-item-section avatar>
+                <img src="icons\Télefono.ico" alt="" style="width: 24px; height: 24px;">
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Teléfono</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/">
+              <q-item-section avatar>
+                <img src="icons\mariakii.ico" alt="" style="width: 24px; height: 24px;">
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Meraki</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/">
+              <q-item-section avatar>
+                <img src="icons\Transceiver.ico" alt="" style="width: 24px; height: 24px;">
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Transceiver</q-item-label>
+              </q-item-section>
+            </q-item>
+
+
+            <q-separator />
+
+            <q-item-label header>
+              Contactos
+            </q-item-label>
+
+            <q-item>
+              <q-item-section avatar>
+                <q-icon name="call" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>533-4339</q-item-label>
+                <q-item-label caption>994-428-965</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section avatar>
+                <q-icon name="call" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>99653-3223</q-item-label>
+                <q-item-label caption>937-514-867</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section avatar>
+                <q-icon name="email" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>netperu100@hotmail.com</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section avatar>
+                <q-icon name="location_on" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Lima, PERÚ</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section avatar>
+                <img src="icons\cisco-gif.gif" alt="Cisco" style="width: 40px; height: 40px;">
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Certificado Cisco</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-drawer>
+      </div>
     </q-header>
 
 
@@ -96,8 +233,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -107,9 +243,37 @@ export default defineComponent({
   },
 
   setup() {
+    const leftDrawerOpen = ref(false)
+    const showSearchBar = ref(false)
+    const searchQuery = ref('')
+    const isMobileView = ref(false)
+
+    const mobileBreakpoint = 768;
+
+    const updateView = () => {
+      isMobileView.value = window.innerWidth < mobileBreakpoint;
+      if (!isMobileView.value && leftDrawerOpen.value) {
+        leftDrawerOpen.value = false;
+      }
+    };
+
+    onMounted(() => {
+      updateView();
+      window.addEventListener('resize', updateView);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', updateView);
+    });
 
     return {
-
+      leftDrawerOpen,
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value
+      },
+      showSearchBar,
+      searchQuery,
+      isMobileView
     }
   }
 })
